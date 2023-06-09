@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>猫猫</title>
+    <style>
+        html {
+            background-color: rgb(255, 233, 233);
+            height: 100%;
+            width: 100%;
+            margin: 0;
+        }
+
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+        }
+
+        .centering {
+            text-align: center;
+        }
+
+        .buttons {
+            text-align: center;
+        }
+
+        .btn {
+            font-size: 5vmin;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 1vmin;
+            border: 1vmin solid rgb(200, 183, 183);
+            border-radius: 3vmin;
+            background: none;
+        }
+
+        .btn:hover {
+            background-color: rgb(255, 240, 240);
+        }
+
+
+        .btn:active {
+            background-color: rgb(255, 245, 245);
+        }
+
+        .catimage {
+            width: 80vmin;
+        }
+
+        .cloudimage {
+            width: 30vmin;
+        }
+
+        .miao {
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            display: none;
+        }
+
+        .container {
+            position: relative;
+        }
+
+        .miaocontent {
+            position: relative;
+            margin-left: auto;
+            margin-right: auto;
+            width: 30vmin;
+            left: 15vmin;
+        }
+
+        .miaotext {
+            position: absolute;
+            left: 12.5vmin;
+            top: 9vmin;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 5vmin;
+        }
+
+        @keyframes miaotextin {
+            0% {
+                opacity: 0;
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes miaotextout {
+            0% {
+                opacity: 1;
+            }
+
+            100% {
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="centering"><img src="cat.png" class="catimage"></div>
+        <div class="buttons">
+            <button type="button" class="btn" onclick="javascript:btnmo();">摸一下</button>
+        </div>
+        <div class="miao" id="miao">
+            <div class="miaocontent">
+                <img src="cloud.png" class="cloudimage">
+                <div class="miaotext">喵</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let ws_protocol = location.protocol;
+
+        let ws = new WebSocket("ws" + ws_protocol.substring(4, ws_protocol.length - 1) + "://" + location.host + "/ws");
+        ws.onmessage = (event) => {
+            mo();
+        }
+
+        function mo() {
+            let miaodiv = document.getElementById("miao");
+            miaodiv.style.animation = "miaotextin linear 0.5s";
+            miaodiv.style.display = "block";
+            setTimeout(() => {
+                miaodiv.style.animation = "miaotextout linear 0.5s";
+                setTimeout(() => {
+                    miaodiv.style.display = "none";
+                }, 490);
+            }, 2000);
+        }
+
+        function btnmo() {
+            ws.send("mo");
+        }
+    </script>
+</body>
+
+</html>
